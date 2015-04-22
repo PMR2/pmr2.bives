@@ -31,6 +31,7 @@ setup(name='pmr2.bives',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
+          'pmr2.cytoscape',
       ],
       entry_points="""
       # -*- Entry points: -*-

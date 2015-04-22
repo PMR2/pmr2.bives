@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="pmr2.bives">
+
+  <browser:page
+      for="Products.CMFPlone.Portal.PloneSite"
+      name="bives_simple"
+      class=".form.BiVeSSimpleForm"
+      permission="zope2.View"
+      />
+
+  <browser:resourceDirectory
+      name="pmr2.bives.css"
+      directory="css"
+      />
+
+  <browser:resourceDirectory
+      name="pmr2.bives.js"
+      directory="js"
+      />
+
+</configure>

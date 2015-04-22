@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="context/@@pmr2-z3cform-macros/main">
+
+<metal:slot metal:fill-slot="style_slot"
+    i18n:domain="pmr2.bives">
+
+  <style type="text/css"
+      tal:content="string:@import url($portal_url/++resource++pmr2.cytoscapejs.css/main.css);">
+  </style>
+
+</metal:slot>
+
+<metal:slot metal:fill-slot="javascript_head_slot" 
+    i18n:domain="pmr2.bives">
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++pmr2.cytoscapejs.js/lib/arbor.js">
+  </script>
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++pmr2.cytoscapejs.js/build/cytoscape.min.js">
+  </script>
+
+  <script type="text/javascript"
+      tal:attributes="src string:$portal_url/++resource++pmr2.bives.js/config.js">
+  </script>
+
+</metal:slot>
+
+<body>
+
+<metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
+  <div id="layout-contents">
+    <h1>Cytoscape.js Viewer</h1>
+    <script tal:content="structure string:var data = ${view/results};">
+    </script>
+    <script>
+    $(document).ready(function() {
+        drawDiffHierarchyJS(data.compHierarchyJson);
+        $('#report').html(data.reportHtml);
+    });
+    </script>
+    <div id="cytoscapejs">
+    </div>
+    <div id="report">
+    </div>
+  </div>
+</metal:slot>
+
+</body>
+</html>

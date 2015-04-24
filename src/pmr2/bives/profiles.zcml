@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="pmr2.bives">
+
+  <genericsetup:registerProfile
+      name="default"
+      title="BiVeS Support for PMR2"
+      directory="profiles/default"
+      description="BiVeS model comparision tool for PMR2"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      />
+
+</configure>

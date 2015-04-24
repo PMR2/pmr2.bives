@@ -3,12 +3,40 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="pmr2.bives">
 
+  <include file="profiles.zcml" />
+
+  <browser:page
+      for="pmr2.app.workspace.interfaces.IWorkspace"
+      name="bives_pick_file"
+      class=".view.BiVeSWorkspaceFilePage"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="Products.CMFPlone.Portal.PloneSite"
+      name="bives_tool"
+      class=".form.BiVeSFileentryPicker"
+      permission="zope2.View"
+      />
+
   <browser:page
       for="Products.CMFPlone.Portal.PloneSite"
       name="bives_simple"
       class=".form.BiVeSSimpleForm"
       permission="zope2.View"
       />
+
+  <!--
+    file info actions
+  -->
+
+  <utility
+      provides="pmr2.app.workspace.browser.interfaces.IFileAction"
+      factory=".fileaction.CompareFileAction"
+      name="bives_compare"
+      />
+
+  <!-- resource directories -->
 
   <browser:resourceDirectory
       name="pmr2.bives.css"

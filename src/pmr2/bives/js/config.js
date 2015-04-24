@@ -1,4 +1,9 @@
-var cytoscapeJSoptions = {
+var cytoscapeJSoptions;
+
+$(document).ready(function() {
+    if (!('cytoscape' in window)) { return false }
+
+    cytoscapeJSoptions = {
 		  layout: {
 			    name: 'arbor'//,
 			    //edgeLength: 2
@@ -77,7 +82,7 @@ var cytoscapeJSoptions = {
 			      cy = this;
 			    }
   };
-
+});
 
 function drawDiffHierarchyJS(graph)
 {

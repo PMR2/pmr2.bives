@@ -1,0 +1,17 @@
+<div id="layout-contents">
+<div id="file_info" tal:attributes="
+    data-workspace_name context/Title;
+    data-physical_path view/physical_path;
+    data-rev request/rev;
+    data-file_path view/data/file;
+    "></div>
+<script>
+$(document).ready(function() {
+    if (add_fileentry($('#file_info').data())) {
+        $('#file_info').text(
+            'File added to comparison tool; redirecting to BiVeS...');
+        window.location = portal_url + '/bives_tool';
+    }
+});
+</script>
+</div>

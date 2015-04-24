@@ -13,6 +13,10 @@
 
 </metal:slot>
 
+<!--
+Remove these once these are properly defined to exist along with the
+config.js script.
+-->
 <metal:slot metal:fill-slot="javascript_head_slot" 
     i18n:domain="pmr2.bives">
 
@@ -29,21 +33,29 @@
 <body>
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
-  <div id="layout-contents">
-    <h1>Cytoscape.js Viewer</h1>
-    <script tal:content="structure string:var data = ${view/results};">
-    </script>
-    <script>
-    $(document).ready(function() {
-        drawDiffHierarchyJS(data.compHierarchyJson);
-        $('#report').html(data.reportHtml);
-    });
-    </script>
-    <div id="cytoscapejs">
-    </div>
-    <div id="report">
-    </div>
-  </div>
+<div id="layout-contents">
+<div id="bives_fileentry">
+<table>
+<thead>
+<tr>
+<th>Workspace</th>
+<th>Path</th>
+<th>Pick As Source</th>
+<th>Pick As Target</th>
+</tr>
+<thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+<button class="btn" id="btn_bives_fileentry_pick">Compare</button>
+<form id="bives_call" method="post">
+<input id="form-widgets-file1" name="form.widgets.file1" type="hidden" />
+<input id="form-widgets-file2" name="form.widgets.file2" type="hidden" />
+<input id="form-buttons-compare" name="form.buttons.compare" type="hidden" value="1"/>
+<span tal:replace="structure context/@@authenticator/authenticator" />
+</form>
 </metal:slot>
 
 </body>

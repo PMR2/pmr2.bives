@@ -16,3 +16,12 @@ class IBiVeSSimpleForm(zope.interface.Interface):
         title=u'File2',
         description=u'Second file to be compared',
     )
+
+
+class ISettings(zope.interface.Interface):
+
+    bives_endpoint = zope.schema.TextLine(
+        title=u'BiVeS WS (webservice) endpoint',
+        description=u'The webservice endpoint for BiVeS.',
+        required=False,
+    )

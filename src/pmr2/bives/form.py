@@ -1,15 +1,22 @@
 import json
 import requests
+import logging
 
 import zope.component
 from z3c.form import button
 from z3c.form import field
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from plone.registry.interfaces import IRegistry
 
 from pmr2.z3cform import form
 from pmr2.app.workspace.interfaces import IStorage
 
 from .interfaces import IBiVeSSimpleForm
+from .interfaces import ISettings
+
+registry_prefix = 'pmr2.bives.settings'
+
+logger = logging.getLogger(__name__)
 
 
 class BiVeSBaseForm(form.PostForm):
@@ -19,7 +26,6 @@ class BiVeSBaseForm(form.PostForm):
 
     result_template = ViewPageTemplateFile('bives_simple.pt')
 
-    bives_endpoint = 'http://localhost:8080/BiVeS-WS-1.3.9.1/'
     commands = ['CellML', 'compHierarchyJson', 'reportHtml']
 
     results = None
@@ -30,7 +36,16 @@ class BiVeSBaseForm(form.PostForm):
             'commands': self.commands,
         }
 
-        r = requests.post(self.bives_endpoint, data=json.dumps(data))
+        registry = zope.component.getUtility(IRegistry)
+        try:
+            settings = registry.forInterface(ISettings, prefix=registry_prefix)
+        except KeyError:
+            self.results = ''
+            logger.warning('pmr2.bives add-on may need to be reinstalled.')
+            # what about end-user warnings?
+            return
+
+        r = requests.post(settings.bives_endpoint, data=json.dumps(data))
         self.results = r.text
 
     def render(self):

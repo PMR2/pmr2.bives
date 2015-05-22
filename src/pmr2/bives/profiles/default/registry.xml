@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<registry>
+  <records
+      interface="pmr2.bives.interfaces.ISettings"
+      prefix="pmr2.bives.settings">
+    <value key="bives_endpoint">http://localhost:8080/BiVeS-WS-1.3.9.1/</value>
+  </records>
+</registry>

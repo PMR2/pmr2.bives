@@ -1,4 +1,5 @@
 var cache_key = 'bives_fileentry_cache';
+var entry_table_body_path = '#bives_fileentry table tbody';
 
 function check_localstorage() {
     return 'localStorage' in window && window['localStorage'] !== null;
@@ -11,6 +12,12 @@ function fetch_fileentry_cache() {
     catch (e) {
         return {};
     }
+}
+
+function clear_fileentries(entry) {
+    if (!check_localstorage()) { return }
+    localStorage[cache_key] = "{}";
+    render_fileentry();
 }
 
 function add_fileentry(entry) {
@@ -35,12 +42,9 @@ function add_fileentry(entry) {
 
 function render_fileentry() {
     if (!check_localstorage()) { return }
-    var fileentry = fetch_fileentry_cache();
-}
-
-var entry_table_body = '#bives_fileentry table tbody';
-$(entry_table_body).ready(function() {
-    entries = fetch_fileentry_cache();
+    var entries = fetch_fileentry_cache();
+    var entry_table_body = $(entry_table_body_path);
+    entry_table_body.html('');
     for (key in entries) {
         var entry = entries[key];
         var tr = $('<tr></tr>')
@@ -55,10 +59,11 @@ $(entry_table_body).ready(function() {
         tr.append($('<td></td>').append(
             $('<input type="radio" name="bives.target" />').attr(
                 'value', key)));
-
-        $(entry_table_body).append(tr);
+        entry_table_body.append(tr);
     }
-});
+}
+
+$(entry_table_body_path).ready(render_fileentry);
 
 $(document).ready(function() {
     $('#btn_bives_fileentry_pick').click(function() {
@@ -75,5 +80,7 @@ $(document).ready(function() {
             JSON.stringify(entries[file2]));
         $('#bives_call').submit()
     });
+
+    $('#btn_bives_fileentry_clear').click(clear_fileentries);
 });
 

@@ -50,6 +50,7 @@ config.js script.
 </div>
 </div>
 <button class="btn" id="btn_bives_fileentry_pick">Compare</button>
+<button class="btn" id="btn_bives_fileentry_clear">Clear</button>
 <form id="bives_call" method="post">
 <input id="form-widgets-file1" name="form.widgets.file1" type="hidden" />
 <input id="form-widgets-file2" name="form.widgets.file2" type="hidden" />

@@ -1,27 +1,31 @@
 var cache_key = 'bives_fileentry_cache';
 var entry_table_body_path = '#bives_fileentry table tbody';
-
-function check_localstorage() {
-    return 'localStorage' in window && window['localStorage'] !== null;
-}
+var has_localStorage = ('localStorage' in window &&
+    window['localStorage'] !== null);
 
 function fetch_fileentry_cache() {
+    if (!has_localStorage) {
+        return {}
+    }
+
     try {
         return JSON.parse(localStorage[cache_key]);
     }
     catch (e) {
+        // Data in localStorage is corrupted so just clear that.
+        localStorage[cache_key] = "{}";
         return {};
     }
 }
 
 function clear_fileentries(entry) {
-    if (!check_localstorage()) { return }
+    if (!has_localStorage) { return }
     localStorage[cache_key] = "{}";
     render_fileentry();
 }
 
 function add_fileentry(entry) {
-    if (!check_localstorage()) { return }
+    if (!has_localStorage) { return }
     var fileentry = fetch_fileentry_cache();
 
     var rev = entry['rev'];
@@ -41,7 +45,6 @@ function add_fileentry(entry) {
 }
 
 function render_fileentry() {
-    if (!check_localstorage()) { return }
     var entries = fetch_fileentry_cache();
     var entry_table_body = $(entry_table_body_path);
     entry_table_body.html('');
@@ -67,13 +70,13 @@ $(entry_table_body_path).ready(render_fileentry);
 
 $(document).ready(function() {
     $('#btn_bives_fileentry_pick').click(function() {
-        entries = fetch_fileentry_cache();
         file1 = $('input[name="bives.source"]:checked').val();
         file2 = $('input[name="bives.target"]:checked').val();
         if (!file1 || !file2) {
             return false;
         }
         
+        entries = fetch_fileentry_cache();
         $('input[name="form.widgets.file1"]').val(
             JSON.stringify(entries[file1]));
         $('input[name="form.widgets.file2"]').val(
@@ -83,4 +86,3 @@ $(document).ready(function() {
 
     $('#btn_bives_fileentry_clear').click(clear_fileentries);
 });
-

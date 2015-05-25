@@ -14,6 +14,8 @@ from pmr2.app.workspace.interfaces import IStorage
 from .interfaces import IBiVeSSimpleForm
 from .interfaces import ISettings
 
+from .view import BiVeSDiffViewer
+
 registry_prefix = 'pmr2.bives.settings'
 
 logger = logging.getLogger(__name__)
@@ -24,12 +26,11 @@ class BiVeSBaseForm(form.PostForm):
     fields = field.Fields(IBiVeSSimpleForm)
     ignoreContext = True
 
-    result_template = ViewPageTemplateFile('bives_simple.pt')
     label = u'BiVeS Model Diff Viewer'
 
     commands = ['CellML', 'compHierarchyJson', 'reportHtml']
 
-    results = None
+    diff_view = None
 
     def bives(self, file1, file2):
         data = {
@@ -47,13 +48,14 @@ class BiVeSBaseForm(form.PostForm):
             return
 
         r = requests.post(settings.bives_endpoint, data=json.dumps(data))
-        self.results = r.text
+        self.diff_view = BiVeSDiffViewer(self.context, self.request)
+        self.diff_view.results = r.text
 
     def render(self):
-        if not self.results:
+        if not self.diff_view:
             return super(BiVeSBaseForm, self).render()
 
-        return self.result_template()
+        return self.diff_view()
 
 
 class BiVeSSimpleForm(BiVeSBaseForm):

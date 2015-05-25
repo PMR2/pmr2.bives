@@ -10,3 +10,10 @@ class BiVeSWorkspaceFilePage(FilePage):
 
     def physical_path(self):
         return '/'.join(self.context.getPhysicalPath())
+
+
+class BiVeSDiffViewer(SimplePage):
+    template = ViewPageTemplateFile('bives_simple.pt')
+
+    label = u'BiVeS Model Diff Viewer'
+    results = None

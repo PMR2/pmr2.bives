@@ -25,6 +25,7 @@ class BiVeSBaseForm(form.PostForm):
     ignoreContext = True
 
     result_template = ViewPageTemplateFile('bives_simple.pt')
+    label = u'BiVeS Model Diff Viewer'
 
     commands = ['CellML', 'compHierarchyJson', 'reportHtml']
 

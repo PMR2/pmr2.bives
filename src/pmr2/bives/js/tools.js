@@ -31,10 +31,12 @@ function add_fileentry(entry) {
     var rev = entry['rev'];
     var physical_path = entry['physical_path'];
     var file_path = entry['file_path'];
+    var href = entry['href'];
 
     if (!((typeof(rev) === 'string')
         && (typeof(physical_path) === 'string')
         && (typeof(file_path) === 'string')
+        && (typeof(href) === 'string')
             )) {
         return false;
     }
@@ -55,12 +57,14 @@ function render_fileentry() {
             $('<span style="color:#666"></span>').text(' @ ' +
                 entry['rev'].substr(0, 12))
         ));
-        tr.append($('<td></td>').text(entry['file_path']));
         tr.append($('<td></td>').append(
-            $('<input type="radio" name="bives.source" />').attr(
+            $('<a></a>').attr('href', entry['href']).text(entry['file_path']))
+        );
+        tr.append($('<td></td>').append(
+            $('<input style="width: 100%;" type="radio" name="bives.source" />').attr(
                 'value', key)));
         tr.append($('<td></td>').append(
-            $('<input type="radio" name="bives.target" />').attr(
+            $('<input style="width: 100%;" type="radio" name="bives.target" />').attr(
                 'value', key)));
         entry_table_body.append(tr);
     }

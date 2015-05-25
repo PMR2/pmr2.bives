@@ -30,7 +30,7 @@
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
   <div id="layout-contents">
-    <h1>Cytoscape.js Viewer</h1>
+    <h1 tal:content="view/label">Cytoscape.js Viewer</h1>
     <script tal:content="structure string:var data = ${view/results};">
     </script>
     <script>

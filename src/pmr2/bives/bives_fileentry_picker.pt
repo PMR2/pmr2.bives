@@ -40,8 +40,8 @@ config.js script.
 <tr>
 <th>Workspace</th>
 <th>Path</th>
-<th>Pick As Source</th>
-<th>Pick As Target</th>
+<th>Source</th>
+<th>Target</th>
 </tr>
 <thead>
 <tbody>
@@ -49,7 +49,7 @@ config.js script.
 </table>
 </div>
 </div>
-<button class="btn" id="btn_bives_fileentry_pick">Compare</button>
+<button class="btn" id="btn_bives_fileentry_pick">Compare Source with Target</button>
 <button class="btn" id="btn_bives_fileentry_clear">Clear</button>
 <form id="bives_call" method="post">
 <input id="form-widgets-file1" name="form.widgets.file1" type="hidden" />

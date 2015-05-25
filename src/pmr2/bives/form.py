@@ -11,6 +11,8 @@ from plone.registry.interfaces import IRegistry
 from pmr2.z3cform import form
 from pmr2.app.workspace.interfaces import IStorage
 
+from Products.CMFCore.utils import getToolByName
+
 from .interfaces import IBiVeSSimpleForm
 from .interfaces import ISettings
 
@@ -85,13 +87,20 @@ class BiVeSFileentryPicker(BiVeSBaseForm):
         file1 = self.extractFileentry(data['file1'])
         file2 = self.extractFileentry(data['file2'])
 
+        if file1 is None or file2 is None:
+            # TODO make better error message.
+            self.status = u'Failed to access all files required.'
+
         # post the data to BiVeS
         self.bives(file1, file2)
 
     def extractFileentry(self, fileentry):
         entry = json.loads(fileentry)
-        workspace = self.context.restrictedTraverse(
-            str(entry['physical_path']))
+        catalog = getToolByName(self.context, 'portal_catalog')
+        target = catalog(path={'query': entry['physical_path'], 'depth': 0,})
+        if not target:
+            return None
+        workspace = target[0].getObject()
         storage = zope.component.getAdapter(workspace, IStorage)
         storage.checkout(entry['rev'])
         return storage.file(entry['file_path'])

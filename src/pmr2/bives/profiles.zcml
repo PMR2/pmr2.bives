@@ -5,7 +5,7 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="BiVeS Support for PMR2"
+      title="PMR2 BiVeS Support"
       directory="profiles/default"
       description="BiVeS model comparision tool for PMR2"
       provides="Products.GenericSetup.interfaces.EXTENSION"

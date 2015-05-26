@@ -85,6 +85,24 @@ $(document).ready(function() {
 function drawDiffHierarchyJS(graph)
 {
     console.log(graph);
+    if (typeof(graph) === "undefined") {
+        if ('error' in data) {
+            $("#cytoscapejs").html('<dl class="portalMessage error">' +
+                '<dt>Error</dt><dd>BiVeS encountered an exception while ' +
+                'attempting to generate the difference graph.</dd></dl>'
+            );
+        }
+        else {
+            $("#cytoscapejs").html('<dl class="portalMessage error">' +
+                '<dt>Error</dt><dd>BiVeS did not return a difference ' +
+                'graph for this request.</dd></dl>'
+            );
+        }
+        $("#cytoscapejs").css({
+            'height': 'auto'
+        });
+        return
+    }
     graph = JSON.parse(graph);
     cytoscapeJSoptions.elements = graph.elements;
     $("#cytoscapejs").html("");

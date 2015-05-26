@@ -6,6 +6,14 @@
     color: #0c0;
 }
 
-.bives-math-modified {
-    color: #00c;
+#bives-report table .bives-table-left {
+    width: 200px;
+    max-width: 200px;
+    overflow: auto;
+}
+
+#bives-report table .bives-table-right {
+    width: 740px;
+    max-width: 740px;
+    overflow: auto;
 }

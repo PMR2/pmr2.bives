@@ -15,11 +15,11 @@
   <script>
   $(document).ready(function() {
       drawDiffHierarchyJS(data.compHierarchyJson);
-      $('#report').html(data.reportHtml);
+      $('#bives-report').html(data.reportHtml);
   });
   </script>
   <div id="cytoscapejs">
   </div>
-  <div id="report">
+  <div id="bives-report">
   </div>
 </div>

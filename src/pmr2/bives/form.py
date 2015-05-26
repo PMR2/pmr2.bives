@@ -34,6 +34,8 @@ class BiVeSBaseForm(form.PostForm):
 
     diff_view = None
 
+    session = requests.Session()
+
     def bives(self, file1, file2):
         data = {
             'files': [file1, file2],
@@ -44,14 +46,19 @@ class BiVeSBaseForm(form.PostForm):
         try:
             settings = registry.forInterface(ISettings, prefix=registry_prefix)
         except KeyError:
-            self.results = ''
             logger.warning('pmr2.bives add-on may need to be reinstalled.')
             # what about end-user warnings?
             return
 
-        r = requests.post(settings.bives_endpoint, data=json.dumps(data))
+        r = self.session.post(settings.bives_endpoint, data=json.dumps(data))
+        try:
+            results = r.json()
+            # It can be successfully decode so it should be safe(TM)
+            results = r.text
+        except ValueError:
+            results = '{"error": "Server returned unexpected results"}'
         self.diff_view = BiVeSDiffViewer(self.context, self.request)
-        self.diff_view.results = r.text
+        self.diff_view.results = results
 
     def render(self):
         if not self.diff_view:
@@ -102,5 +109,8 @@ class BiVeSFileentryPicker(BiVeSBaseForm):
             return None
         workspace = target[0].getObject()
         storage = zope.component.getAdapter(workspace, IStorage)
-        storage.checkout(entry['rev'])
-        return storage.file(entry['file_path'])
+        try:
+            storage.checkout(entry['rev'])
+            return storage.file(entry['file_path'])
+        except ValueError:
+            return None

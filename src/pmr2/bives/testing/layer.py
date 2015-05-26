@@ -11,15 +11,16 @@ class BivesLayer(PloneSandboxLayer):
 
     def setUpZope(self, app, configurationContext):
         import pmr2.bives
+        import pmr2.cytoscapejs
+        self.loadZCML(package=pmr2.cytoscapejs)
         self.loadZCML(package=pmr2.bives)
-        z2.installProduct(app, 'pmr2.bives')
 
     def setUpPloneSite(self, portal):
         # install pmr2.bives
         self.applyProfile(portal, 'pmr2.bives:default')
 
     def tearDownZope(self, app):
-        z2.uninstallProduct(app, 'pmr2.bives')
+        pass
 
 
 BIVES_FIXTURE = BivesLayer()

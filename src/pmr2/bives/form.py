@@ -46,8 +46,8 @@ class BiVeSBaseForm(form.PostForm):
         try:
             settings = registry.forInterface(ISettings, prefix=registry_prefix)
         except KeyError:
-            logger.warning('pmr2.bives add-on may need to be reinstalled.')
-            # what about end-user warnings?
+            self.status = (u'Could not load settings for pmr2.bives.  Please '
+                'check the installation status for this add-on.')
             return
 
         r = self.session.post(settings.bives_endpoint, data=json.dumps(data))

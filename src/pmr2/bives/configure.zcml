@@ -13,6 +13,13 @@
       />
 
   <browser:page
+      for="pmr2.app.exposure.interfaces.IExposureFile"
+      name="bives_pick_file"
+      class=".view.BiVeSExposureFilePage"
+      permission="zope2.View"
+      />
+
+  <browser:page
       for="Products.CMFPlone.Portal.PloneSite"
       name="bives_tool"
       class=".form.BiVeSFileentryPicker"
@@ -35,6 +42,13 @@
       factory=".fileaction.CompareFileAction"
       name="bives_compare"
       />
+
+  <utility
+      provides="pmr2.app.exposure.interfaces.IExposureFileTool"
+      factory=".utility.ExposureFileComparisonTool"
+      name="bives_compare"
+      />
+
 
   <!-- resource directories -->
 

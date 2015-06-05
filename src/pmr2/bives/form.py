@@ -10,6 +10,7 @@ from plone.registry.interfaces import IRegistry
 
 from pmr2.z3cform import form
 from pmr2.app.workspace.interfaces import IStorage
+from pmr2.app.exposure.interfaces import IExposureSourceAdapter
 
 from Products.CMFCore.utils import getToolByName
 
@@ -104,13 +105,27 @@ class BiVeSFileentryPicker(BiVeSBaseForm):
     def extractFileentry(self, fileentry):
         entry = json.loads(fileentry)
         catalog = getToolByName(self.context, 'portal_catalog')
-        target = catalog(path={'query': entry['physical_path'], 'depth': 0,})
-        if not target:
+        brains = catalog(path={'query': entry['physical_path'], 'depth': 0,})
+        if not brains:
             return None
-        workspace = target[0].getObject()
-        storage = zope.component.getAdapter(workspace, IStorage)
+
+        brain = brains[0]
+
         try:
-            storage.checkout(entry['rev'])
-            return storage.file(entry['file_path'])
+            if brain.portal_type == 'Workspace':
+                rev = entry['rev']
+                path = entry['file_path']
+                workspace = brain.getObject()
+                storage = zope.component.getAdapter(workspace, IStorage)
+                storage.checkout(rev)
+            elif brain.portal_type == 'ExposureFile':
+                ef = brain.getObject()
+                helper = zope.component.getAdapter(ef, IExposureSourceAdapter)
+                exposure, w, path = helper.source()
+                storage = zope.component.getAdapter(exposure, IStorage)
+            else:
+                return None
+
+            return storage.file(path)
         except ValueError:
             return None

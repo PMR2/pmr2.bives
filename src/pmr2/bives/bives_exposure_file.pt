@@ -1,0 +1,31 @@
+<div id="layout-contents">
+<div id="file_info" tal:attributes="
+    data-obj_name context/Title;
+    data-physical_path view/physical_path;
+    data-href context/absolute_url;
+    data-rev string:;
+    data-file_path string:;
+    "></div>
+<script>
+$(document).ready(function() {
+    if (typeof(add_fileentry) !== 'function') {
+        $('#file_info').html('<dl class="portalMessage warning">'
+        + '<dt>Warning</dt><dd>'
+        + 'The file comparison tool is not properly enabled as an add-on. '
+        + 'Please go <a href="javascript:history.back()">back</a>.'
+        + '</dd></dl>'
+        );
+        return
+    }
+    if (add_fileentry($('#file_info').data())) {
+        $('#file_info').html('<dl class="portalMessage info">'
+        + '<dt>Info</dt><dd>'
+        + 'File added to comparison tool; redirecting to BiVeS...'
+        + '</dd></dl>'
+        );
+        window.location = portal_url + '/bives_tool';
+    }
+});
+</script>
+<noscript>The comparison feature requires Javascript.</noscript>
+</div>

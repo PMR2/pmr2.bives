@@ -1,7 +1,15 @@
+var VERSION = 1;
+var version_key = 'bives_fileentry_version';
 var cache_key = 'bives_fileentry_cache';
 var entry_table_body_path = '#bives_fileentry table tbody';
 var has_localStorage = ('localStorage' in window &&
     window['localStorage'] !== null);
+
+
+function format_localStorage() {
+    localStorage[cache_key] = "{}";
+    localStorage[version_key] = VERSION;
+}
 
 function fetch_fileentry_cache() {
     if (!has_localStorage) {
@@ -9,18 +17,21 @@ function fetch_fileentry_cache() {
     }
 
     try {
+        if (!(localStorage[version_key] >= VERSION)) {
+            throw "Version out of date";
+        }
         return JSON.parse(localStorage[cache_key]);
     }
     catch (e) {
         // Data in localStorage is corrupted so just clear that.
-        localStorage[cache_key] = "{}";
+        format_localStorage();
         return {};
     }
 }
 
 function clear_fileentries(entry) {
     if (!has_localStorage) { return }
-    localStorage[cache_key] = "{}";
+    format_localStorage();
     render_fileentry();
 }
 

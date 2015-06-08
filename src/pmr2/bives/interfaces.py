@@ -7,6 +7,16 @@ class IBiVeSSimpleForm(zope.interface.Interface):
     BiVeS Input Form.
     """
 
+    raw_source = zope.schema.TextLine(
+        title=u'Raw source',
+        description=u'',
+    )
+
+    raw_target = zope.schema.TextLine(
+        title=u'Raw target',
+        description=u'',
+    )
+
     file1 = zope.schema.TextLine(
         title=u'File1',
         description=u'First file to be compared',

@@ -9,6 +9,7 @@
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">
 <div id="layout-contents">
 <div id="bives_fileentry">
+<form id="bives_call" method="post">
 <table>
 <thead>
 <tr>
@@ -20,16 +21,15 @@
 <tbody>
 </tbody>
 </table>
-</div>
-</div>
 <button class="btn" id="btn_bives_fileentry_pick">Compare Source with Target</button>
 <button class="btn" id="btn_bives_fileentry_clear">Clear</button>
-<form id="bives_call" method="post">
 <input id="form-widgets-file1" name="form.widgets.file1" type="hidden" />
 <input id="form-widgets-file2" name="form.widgets.file2" type="hidden" />
 <input id="form-buttons-compare" name="form.buttons.compare" type="hidden" value="1"/>
 <span tal:replace="structure context/@@authenticator/authenticator" />
 </form>
+</div>
+</div>
 </metal:slot>
 
 </body>

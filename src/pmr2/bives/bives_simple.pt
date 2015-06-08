@@ -13,10 +13,28 @@
   </script>
   <script>
   $(document).ready(function() {
+      var entries = fetch_fileentry_cache();
+
+      function link_entry(id) {
+          node = $(id);
+          entry = entries[node.data().entry];
+          portal_type = entry['portal_type'];
+          node.html(entry_formatter[portal_type](entry));
+      }
+
+      link_entry('#src_model');
+      link_entry('#dst_model');
+
       drawDiffHierarchyJS(data.compHierarchyJson);
       $('#bives-report').html(data.reportHtml);
   });
   </script>
+  <p>Showing changes to
+    <span id="src_model" tal:attributes="
+        data-entry view/raw_source">Source Model</span> made by
+    <span id="dst_model" tal:attributes="
+        data-entry view/raw_target">Target Model</span>.
+  </p>
   <div id="cytoscapejs">
   </div>
   <div id="bives-report">

@@ -57,38 +57,45 @@ function add_fileentry(entry) {
     return true;
 }
 
+var entry_formatter = {
+    'Workspace': function (entry) {
+        return $('<a></a>').attr('href', entry['href']).text(''
+        + entry['obj_name']
+        + ' @ '
+        + entry['rev'].substr(0, 12)
+        + ' / '
+        + entry['file_path']
+        );
+    },
+    'ExposureFile': function (entry) {
+        return $('<a></a>').attr('href', entry['href'] + '/view').text(
+            entry['obj_name']);
+    }
+}
+
 function render_fileentry() {
     var entries = fetch_fileentry_cache();
     var entry_table_body = $(entry_table_body_path);
     entry_table_body.html('');
     for (key in entries) {
         var entry = entries[key];
-        var tr = $('<tr></tr>')
-        var td = $('<td></td>')
+        var tr = $('<tr></tr>');
+        var td = $('<td></td>');
 
-        if (entry['portal_type'] == 'Workspace') {
-            td.append($('<a></a>').attr('href', entry['href']).text(''
-            + entry['obj_name']
-            + ' @ '
-            + entry['rev'].substr(0, 12)
-            + ' / '
-            + entry['file_path']
-            ));
+        try {
+            td.append(entry_formatter[entry['portal_type']](entry));
         }
-        else if (entry['portal_type'] == 'ExposureFile') {
+        catch (e) {
             td.append($('<a></a>').attr('href', entry['href']).text(
-                entry['obj_name']));
-        }
-        else {
-            td.append($('<a></a>').attr('href', entry['href']).text('Unknown'));
+                'Unknown'));
         }
 
         tr.append(td);
         tr.append($('<td></td>').append(
-            $('<input type="radio" name="bives.source" />').attr(
+            $('<input type="radio" name="form.widgets.raw_source" />').attr(
                 'value', key)));
         tr.append($('<td></td>').append(
-            $('<input type="radio" name="bives.target" />').attr(
+            $('<input type="radio" name="form.widgets.raw_target" />').attr(
                 'value', key)));
         entry_table_body.append(tr);
     }
@@ -98,8 +105,8 @@ $(entry_table_body_path).ready(render_fileentry);
 
 $(document).ready(function() {
     $('#btn_bives_fileentry_pick').click(function() {
-        file1 = $('input[name="bives.source"]:checked').val();
-        file2 = $('input[name="bives.target"]:checked').val();
+        file1 = $('input[name="form.widgets.raw_source"]:checked').val();
+        file2 = $('input[name="form.widgets.raw_target"]:checked').val();
         if (!file1 || !file2) {
             return false;
         }

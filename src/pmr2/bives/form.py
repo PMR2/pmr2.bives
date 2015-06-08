@@ -38,7 +38,7 @@ class BiVeSBaseForm(form.PostForm):
 
     session = requests.Session()
 
-    def bives(self, file1, file2):
+    def bives(self, file1, file2, raw_source, raw_target):
         data = {
             'files': [file1, file2],
             'commands': self.commands,
@@ -61,6 +61,8 @@ class BiVeSBaseForm(form.PostForm):
             results = '{"error": "Server returned unexpected results"}'
         self.diff_view = self.diff_viewer(self.context, self.request)
         self.diff_view.results = results
+        self.diff_view.raw_source = raw_source
+        self.diff_view.raw_target = raw_target
 
     def render(self):
         if not self.diff_view:
@@ -79,7 +81,7 @@ class BiVeSSimpleForm(BiVeSBaseForm):
             return
 
         # post the data to BiVeS
-        self.bives(data['file1'], data['file2'])
+        self.bives(**data)
 
 
 class BiVeSFileentryPicker(BiVeSBaseForm):
@@ -93,15 +95,16 @@ class BiVeSFileentryPicker(BiVeSBaseForm):
             self.status = u'Invalid input'
             return
 
-        file1 = self.extractFileentry(data['file1'])
-        file2 = self.extractFileentry(data['file2'])
+        file1 = self.extractFileentry(data.pop('file1'))
+        file2 = self.extractFileentry(data.pop('file2'))
 
         if file1 is None or file2 is None:
             # TODO make better error message.
             self.status = u'Failed to access all files required.'
+            return
 
         # post the data to BiVeS
-        self.bives(file1, file2)
+        self.bives(file1, file2, **data)
 
     def extractFileentry(self, fileentry):
         entry = json.loads(fileentry)

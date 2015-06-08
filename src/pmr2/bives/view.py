@@ -25,3 +25,6 @@ class BiVeSDiffViewer(SimplePage):
 
     label = u'BiVeS Model Diff Viewer'
     results = None
+
+    raw_source = None
+    raw_target = None

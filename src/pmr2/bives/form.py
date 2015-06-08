@@ -33,6 +33,7 @@ class BiVeSBaseForm(form.PostForm):
 
     commands = ['CellML', 'compHierarchyJson', 'reportHtml']
 
+    diff_viewer = BiVeSDiffViewer
     diff_view = None
 
     session = requests.Session()
@@ -58,7 +59,7 @@ class BiVeSBaseForm(form.PostForm):
             results = r.text
         except ValueError:
             results = '{"error": "Server returned unexpected results"}'
-        self.diff_view = BiVeSDiffViewer(self.context, self.request)
+        self.diff_view = self.diff_viewer(self.context, self.request)
         self.diff_view.results = results
 
     def render(self):

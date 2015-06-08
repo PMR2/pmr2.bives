@@ -17,3 +17,7 @@
     max-width: 740px;
     overflow: auto;
 }
+
+#bives_fileentry input[type="radio"] {
+    width: 100%;
+}

@@ -5,6 +5,7 @@
     data-href context/absolute_url;
     data-rev string:;
     data-file_path string:;
+    data-portal_type string:ExposureFile;
     "></div>
 <script>
 $(document).ready(function() {

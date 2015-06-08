@@ -53,18 +53,31 @@ function render_fileentry() {
     for (key in entries) {
         var entry = entries[key];
         var tr = $('<tr></tr>')
-        tr.append($('<td></td>').text(entry['workspace_name']).append(
-            $('<span style="color:#666"></span>').text(' @ ' +
-                entry['rev'].substr(0, 12))
-        ));
+        var td = $('<td></td>')
+
+        if (entry['portal_type'] == 'Workspace') {
+            td.append($('<a></a>').attr('href', entry['href']).text(''
+            + entry['obj_name']
+            + ' @ '
+            + entry['rev'].substr(0, 12)
+            + ' / '
+            + entry['file_path']
+            ));
+        }
+        else if (entry['portal_type'] == 'ExposureFile') {
+            td.append($('<a></a>').attr('href', entry['href']).text(
+                entry['obj_name']));
+        }
+        else {
+            td.append($('<a></a>').attr('href', entry['href']).text('Unknown'));
+        }
+
+        tr.append(td);
         tr.append($('<td></td>').append(
-            $('<a></a>').attr('href', entry['href']).text(entry['file_path']))
-        );
-        tr.append($('<td></td>').append(
-            $('<input style="width: 100%;" type="radio" name="bives.source" />').attr(
+            $('<input type="radio" name="bives.source" />').attr(
                 'value', key)));
         tr.append($('<td></td>').append(
-            $('<input style="width: 100%;" type="radio" name="bives.target" />').attr(
+            $('<input type="radio" name="bives.target" />').attr(
                 'value', key)));
         entry_table_body.append(tr);
     }

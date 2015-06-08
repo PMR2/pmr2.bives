@@ -38,8 +38,7 @@ config.js script.
 <table>
 <thead>
 <tr>
-<th>Workspace</th>
-<th>Path</th>
+<th>Selected Item</th>
 <th>Source</th>
 <th>Target</th>
 </tr>

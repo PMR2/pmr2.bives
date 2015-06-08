@@ -1,10 +1,11 @@
 <div id="layout-contents">
 <div id="file_info" tal:attributes="
-    data-workspace_name context/Title;
+    data-obj_name context/Title;
     data-physical_path view/physical_path;
     data-href view/viewpath;
     data-rev request/rev;
     data-file_path view/data/file;
+    data-portal_type string:Workspace;
     "></div>
 <script>
 $(document).ready(function() {

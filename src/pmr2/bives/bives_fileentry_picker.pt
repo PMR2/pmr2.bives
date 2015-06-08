@@ -4,32 +4,6 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="context/@@pmr2-z3cform-macros/main">
 
-<metal:slot metal:fill-slot="style_slot"
-    i18n:domain="pmr2.bives">
-
-  <style type="text/css"
-      tal:content="string:@import url($portal_url/++resource++pmr2.cytoscapejs.css/main.css);">
-  </style>
-
-</metal:slot>
-
-<!--
-Remove these once these are properly defined to exist along with the
-config.js script.
--->
-<metal:slot metal:fill-slot="javascript_head_slot" 
-    i18n:domain="pmr2.bives">
-
-  <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++pmr2.cytoscapejs.js/lib/arbor.js">
-  </script>
-
-  <script type="text/javascript"
-      tal:attributes="src string:$portal_url/++resource++pmr2.cytoscapejs.js/build/cytoscape.min.js">
-  </script>
-
-</metal:slot>
-
 <body>
 
 <metal:slot metal:fill-slot="main" i18n:domain="cmf_default">

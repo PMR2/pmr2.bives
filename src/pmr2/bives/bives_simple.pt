@@ -24,12 +24,14 @@
 
       link_entry('#src_model');
       link_entry('#dst_model');
+      $('#bives_source_target_desc').attr('style', '');
 
       drawDiffHierarchyJS(data.compHierarchyJson);
       $('#bives-report').html(data.reportHtml);
   });
   </script>
-  <p>Showing changes to
+  <p id="bives_source_target_desc" style="visibility: hidden">
+    Showing changes to
     <span id="src_model" tal:attributes="
         data-entry view/raw_source">Source Model</span> made by
     <span id="dst_model" tal:attributes="

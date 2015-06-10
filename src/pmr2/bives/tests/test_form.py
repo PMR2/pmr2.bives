@@ -63,7 +63,7 @@ class FormTestCase(unittest.TestCase):
     def test_call_bives_standard(self):
         form = BiVeSBaseForm(self.portal, self.portal.REQUEST)
         form.session = self.session
-        form.bives('file1', 'file2')
+        form.bives('file1', 'file2', 'raw_source', 'raw_target')
         self.assertEqual(json.loads(self.session.history[0][2]['data']), {
             'files': ['file1', 'file2'],
             'commands': ['CellML', 'compHierarchyJson', 'reportHtml'],
@@ -75,7 +75,7 @@ class FormTestCase(unittest.TestCase):
         form = BiVeSBaseForm(self.portal, self.portal.REQUEST)
         self.session.key = 'invalid'
         form.session = self.session
-        form.bives('file1', 'file2')
+        form.bives('file1', 'file2', 'raw_source', 'raw_target')
         self.assertEqual(json.loads(self.session.history[0][2]['data']), {
             'files': ['file1', 'file2'],
             'commands': ['CellML', 'compHierarchyJson', 'reportHtml'],
@@ -104,6 +104,8 @@ class FormTestCase(unittest.TestCase):
                 '"rev": "1", "file_path": "file3"}',
             'form.widgets.file2': '{"physical_path": "/plone/workspace/test", '
                 '"rev": "2", "file_path": "file3"}',
+            'form.widgets.raw_source': '/plone/workspace/test',
+            'form.widgets.raw_target': '/plone/workspace/test',
             'form.buttons.compare': 1,
         }
         form = BiVeSFileentryPicker(self.portal, self.portal.REQUEST)
@@ -125,6 +127,8 @@ class FormTestCase(unittest.TestCase):
                 '"rev": "1", "file_path": "file3"}',
             'form.widgets.file2': '{"physical_path": "/plone/w/nosuchthing", '
                 '"rev": "2", "file_path": "/no/such/path"}',
+            'form.widgets.raw_source': '/plone/workspace/test',
+            'form.widgets.raw_target': '/plone/workspace/test',
             'form.buttons.compare': 1,
         }
         form = BiVeSFileentryPicker(self.portal, self.portal.REQUEST)
@@ -140,6 +144,8 @@ class FormTestCase(unittest.TestCase):
                 '"rev": "1", "file_path": "file3"}',
             'form.widgets.file2': '{"physical_path": "/plone/workspace/test", '
                 '"rev": "2", "file_path": "/no/such/path"}',
+            'form.widgets.raw_source': '/plone/workspace/test',
+            'form.widgets.raw_target': '/plone/workspace/test',
             'form.buttons.compare': 1,
         }
         form = BiVeSFileentryPicker(self.portal, self.portal.REQUEST)
@@ -155,6 +161,8 @@ class FormTestCase(unittest.TestCase):
                 '"rev": "1", "file_path": "file3"}',
             'form.widgets.file2': '{"physical_path": "/plone/workspace/test", '
                 '"rev": "no such rev", "file_path": "file3"}',
+            'form.widgets.raw_source': '/plone/workspace/test',
+            'form.widgets.raw_target': '/plone/workspace/test',
             'form.buttons.compare': 1,
         }
         form = BiVeSFileentryPicker(self.portal, self.portal.REQUEST)

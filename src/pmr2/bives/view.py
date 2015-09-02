@@ -1,7 +1,44 @@
+import json
+import requests
+
+import zope.component
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
+from plone.registry.interfaces import IRegistry
 
 from pmr2.z3cform.page import SimplePage
 from pmr2.app.workspace.browser.browser import FilePage
+
+from .interfaces import ISettings
+
+registry_prefix = 'pmr2.bives.settings'
+
+
+def apply_bives_view(view, files, commands, attributes):
+    data = {
+        'files': files,
+        'commands': commands,
+    }
+
+    registry = zope.component.getUtility(IRegistry)
+    try:
+        settings = registry.forInterface(ISettings, prefix=registry_prefix)
+    except KeyError:
+        view.status = (u'Could not load settings for pmr2.bives.  Please '
+            'check the installation status for this add-on.')
+        return
+
+    r = view.session.post(settings.bives_endpoint, data=json.dumps(data))
+    try:
+        results = r.json()
+        # It can be successfully decode so it should be safe(TM)
+        results = r.text
+    except ValueError:
+        results = '{"error": "Server returned unexpected results"}'
+    view.diff_view = view.diff_viewer(view.context, view.request)
+    view.diff_view.results = results
+
+    for k, v in attributes.items():
+        setattr(view.diff_view, k, v)
 
 
 class BiVeSExposurePickFilePage(SimplePage):

@@ -6,7 +6,6 @@ import zope.component
 from z3c.form import button
 from z3c.form import field
 from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-from plone.registry.interfaces import IRegistry
 
 from pmr2.z3cform import form
 from pmr2.app.workspace.interfaces import IStorage
@@ -15,11 +14,9 @@ from pmr2.app.exposure.interfaces import IExposureSourceAdapter
 from Products.CMFCore.utils import getToolByName
 
 from .interfaces import IBiVeSSimpleForm
-from .interfaces import ISettings
 
+from .view import apply_bives_view
 from .view import BiVeSDiffViewer
-
-registry_prefix = 'pmr2.bives.settings'
 
 logger = logging.getLogger(__name__)
 
@@ -37,32 +34,6 @@ class BiVeSBaseForm(form.PostForm):
     diff_view = None
 
     session = requests.Session()
-
-    def bives(self, file1, file2, raw_source, raw_target):
-        data = {
-            'files': [file1, file2],
-            'commands': self.commands,
-        }
-
-        registry = zope.component.getUtility(IRegistry)
-        try:
-            settings = registry.forInterface(ISettings, prefix=registry_prefix)
-        except KeyError:
-            self.status = (u'Could not load settings for pmr2.bives.  Please '
-                'check the installation status for this add-on.')
-            return
-
-        r = self.session.post(settings.bives_endpoint, data=json.dumps(data))
-        try:
-            results = r.json()
-            # It can be successfully decode so it should be safe(TM)
-            results = r.text
-        except ValueError:
-            results = '{"error": "Server returned unexpected results"}'
-        self.diff_view = self.diff_viewer(self.context, self.request)
-        self.diff_view.results = results
-        self.diff_view.raw_source = raw_source
-        self.diff_view.raw_target = raw_target
 
     def update(self):
         self.request['disable_border'] = 1
@@ -85,7 +56,9 @@ class BiVeSSimpleForm(BiVeSBaseForm):
             return
 
         # post the data to BiVeS
-        self.bives(**data)
+        files = (data['file1'], data['file2'])
+        commands = self.commands
+        apply_bives_view(self, files, commands, data)
 
 
 class BiVeSFileentryPicker(BiVeSBaseForm):
@@ -108,7 +81,9 @@ class BiVeSFileentryPicker(BiVeSBaseForm):
             return
 
         # post the data to BiVeS
-        self.bives(file1, file2, **data)
+        files = (file1, file2)
+        commands = self.commands
+        apply_bives_view(self, files, commands, data)
 
     def extractFileentry(self, fileentry):
         entry = json.loads(fileentry)

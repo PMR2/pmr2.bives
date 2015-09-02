@@ -12,6 +12,7 @@ from pmr2.testing.base import TestRequest
 
 from pmr2.bives.testing.layer import BIVES_INTEGRATION_LAYER
 from pmr2.bives.interfaces import ISettings
+from pmr2.bives.view import apply_bives_view
 from pmr2.bives.form import BiVeSBaseForm
 from pmr2.bives.form import BiVeSFileentryPicker
 
@@ -63,7 +64,10 @@ class FormTestCase(unittest.TestCase):
     def test_call_bives_standard(self):
         form = BiVeSBaseForm(self.portal, self.portal.REQUEST)
         form.session = self.session
-        form.bives('file1', 'file2', 'raw_source', 'raw_target')
+        apply_bives_view(form, ['file1', 'file2'], form.commands, {
+            'raw_source': 'raw_source',
+            'raw_target': 'raw_target'
+        })
         self.assertEqual(json.loads(self.session.history[0][2]['data']), {
             'files': ['file1', 'file2'],
             'commands': ['CellML', 'compHierarchyJson', 'reportHtml'],
@@ -75,7 +79,10 @@ class FormTestCase(unittest.TestCase):
         form = BiVeSBaseForm(self.portal, self.portal.REQUEST)
         self.session.key = 'invalid'
         form.session = self.session
-        form.bives('file1', 'file2', 'raw_source', 'raw_target')
+        apply_bives_view(form, ['file1', 'file2'], form.commands, {
+            'raw_source': 'raw_source',
+            'raw_target': 'raw_target'
+        })
         self.assertEqual(json.loads(self.session.history[0][2]['data']), {
             'files': ['file1', 'file2'],
             'commands': ['CellML', 'compHierarchyJson', 'reportHtml'],

@@ -8,14 +8,14 @@
   <browser:page
       for="pmr2.app.workspace.interfaces.IWorkspace"
       name="bives_pick_file"
-      class=".view.BiVeSWorkspaceFilePage"
+      class=".view.BiVeSWorkspacePickFilePage"
       permission="zope2.View"
       />
 
   <browser:page
       for="pmr2.app.exposure.interfaces.IExposureFile"
       name="bives_pick_file"
-      class=".view.BiVeSExposureFilePage"
+      class=".view.BiVeSExposurePickFilePage"
       permission="zope2.View"
       />
 

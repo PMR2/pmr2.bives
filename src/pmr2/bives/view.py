@@ -4,16 +4,16 @@ from pmr2.z3cform.page import SimplePage
 from pmr2.app.workspace.browser.browser import FilePage
 
 
-class BiVeSExposureFilePage(SimplePage):
-    template = ViewPageTemplateFile('bives_exposure_file.pt')
+class BiVeSExposurePickFilePage(SimplePage):
+    template = ViewPageTemplateFile('bives_exposure_pick_file.pt')
     label = ''
 
     def physical_path(self):
         return '/'.join(self.context.getPhysicalPath())
 
 
-class BiVeSWorkspaceFilePage(FilePage):
-    template = ViewPageTemplateFile('bives_workspace_file.pt')
+class BiVeSWorkspacePickFilePage(FilePage):
+    template = ViewPageTemplateFile('bives_workspace_pick_file.pt')
     label = ''
 
     def physical_path(self):
@@ -21,7 +21,7 @@ class BiVeSWorkspaceFilePage(FilePage):
 
 
 class BiVeSDiffViewer(SimplePage):
-    template = ViewPageTemplateFile('bives_simple.pt')
+    template = ViewPageTemplateFile('bives_simple_diff.pt')
 
     label = u'BiVeS Model Diff Viewer'
     results = None

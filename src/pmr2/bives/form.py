@@ -64,6 +64,10 @@ class BiVeSBaseForm(form.PostForm):
         self.diff_view.raw_source = raw_source
         self.diff_view.raw_target = raw_target
 
+    def update(self):
+        self.request['disable_border'] = 1
+        super(BiVeSBaseForm, self).update()
+
     def render(self):
         if not self.diff_view:
             return super(BiVeSBaseForm, self).render()

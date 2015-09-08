@@ -27,13 +27,17 @@ def apply_bives_view(view, files, commands, attributes):
             'check the installation status for this add-on.')
         return
 
-    r = view.session.post(settings.bives_endpoint, data=json.dumps(data))
     try:
+        r = view.session.post(settings.bives_endpoint, data=json.dumps(data))
         results = r.json()
         # It can be successfully decode so it should be safe(TM)
         results = r.text
     except ValueError:
         results = '{"error": "Server returned unexpected results"}'
+    except requests.exceptions.ConnectionError:
+        results = '{"error": "Error connecting to BiVeS server."}'
+    except requests.exceptions.RequestException:
+        results = '{"error": "Unexpected exception when handling BiVeS."}'
     view.diff_view = view.diff_viewer(view.context, view.request)
     view.diff_view.results = results
 

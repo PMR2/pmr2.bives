@@ -69,3 +69,42 @@ class BiVeSDiffViewer(SimplePage):
 
     raw_source = None
     raw_target = None
+
+
+class BiVeSSingleViewer(SimplePage):
+    template = ViewPageTemplateFile('bives_single.pt')
+
+    label = u'BiVeS Model Viewer'
+    results = None
+
+    raw_source = None
+
+
+class BiVeSBaseView(SimplePage):
+
+    label = u'BiVeS Viewer'
+
+    commands = ['singleCompHierarchyJson',]
+
+    diff_viewer = BiVeSSingleViewer
+    diff_view = None
+
+    session = requests.Session()
+
+    def extract_file(self):
+        # return the file
+        return self.context.absolute_url()
+
+    def update(self):
+        self.request['disable_border'] = 1
+        super(BiVeSBaseView, self).update()
+        # post the data to BiVeS
+        files = (self.extract_file(),)
+        commands = self.commands
+        apply_bives_view(self, files, commands, {})
+
+    def render(self):
+        if not self.diff_view:
+            return super(BiVeSBaseView, self).render()
+
+        return self.diff_view()

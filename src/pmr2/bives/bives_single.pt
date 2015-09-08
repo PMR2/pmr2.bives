@@ -1,0 +1,25 @@
+<script id="mathjax_src" type="text/javascript"
+    src="//cdn.mathjax.org/mathjax/1.1-latest/MathJax.js">
+//<![CDATA[
+  MathJax.Hub.Config({
+    extensions: ["mml2jax.js"],
+    jax: ["input/MathML", "output/HTML-CSS"],
+  });
+//]]>
+</script>
+
+<div id="layout-contents">
+  <script tal:content="structure string:var data = ${view/results};">
+  </script>
+  <script>
+  $(document).ready(function() {
+      var entries = fetch_fileentry_cache();
+      drawDiffHierarchyJS(data.singleCompHierarchyJson);
+  });
+  </script>
+  <p id="bives_source_target_desc">
+    Showing rendering of model.
+  </p>
+  <div id="cytoscapejs">
+  </div>
+</div>

@@ -20,6 +20,13 @@
       />
 
   <browser:page
+      for="pmr2.app.exposure.interfaces.IExposureFile"
+      name="bives_cellml"
+      class=".view.BiVeSBaseView"
+      permission="zope2.View"
+      />
+
+  <browser:page
       for="Products.CMFPlone.Portal.PloneSite"
       name="bives_tool"
       class=".form.BiVeSFileentryPicker"

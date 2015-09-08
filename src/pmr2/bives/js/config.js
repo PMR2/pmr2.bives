@@ -78,6 +78,8 @@ $(document).ready(function() {
 
         ready: function() {
             cy = this;
+            cy.maxZoom(5);
+            cy.minZoom(0.2);
         }
     };
 });

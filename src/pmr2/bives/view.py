@@ -12,8 +12,10 @@ from .interfaces import ISettings
 
 registry_prefix = 'pmr2.bives.settings'
 
+_session = requests.Session()
 
-def apply_bives_view(view, files, commands, attributes):
+
+def call_bives(files, commands, session=_session):
     data = {
         'files': files,
         'commands': commands,
@@ -28,7 +30,7 @@ def apply_bives_view(view, files, commands, attributes):
         return
 
     try:
-        r = view.session.post(settings.bives_endpoint, data=json.dumps(data))
+        r = session.post(settings.bives_endpoint, data=json.dumps(data))
         results = r.json()
         # It can be successfully decode so it should be safe(TM)
         results = r.text
@@ -38,9 +40,13 @@ def apply_bives_view(view, files, commands, attributes):
         results = '{"error": "Error connecting to BiVeS server."}'
     except requests.exceptions.RequestException:
         results = '{"error": "Unexpected exception when handling BiVeS."}'
+    return results
+
+
+def apply_bives_view(view, files, commands, attributes):
+    results = call_bives(files, commands, view.session)
     view.diff_view = view.diff_viewer(view.context, view.request)
     view.diff_view.results = results
-
     for k, v in attributes.items():
         setattr(view.diff_view, k, v)
 
@@ -88,8 +94,6 @@ class BiVeSBaseView(SimplePage):
 
     diff_viewer = BiVeSSingleViewer
     diff_view = None
-
-    session = requests.Session()
 
     def extract_file(self):
         # return the file

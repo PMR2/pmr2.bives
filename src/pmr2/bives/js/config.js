@@ -6,7 +6,7 @@ $(document).ready(function() {
     cytoscapeJSoptions = {
         layout: {
             // edgeLength: 2,
-            name: 'arbor'
+            name: 'cola'
         },
 
         style: cytoscape.stylesheet()

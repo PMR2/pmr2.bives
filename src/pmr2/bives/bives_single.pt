@@ -1,5 +1,5 @@
 <script id="mathjax_src" type="text/javascript"
-    src="//cdn.mathjax.org/mathjax/1.1-latest/MathJax.js">
+    src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js">
 //<![CDATA[
   MathJax.Hub.Config({
     extensions: ["mml2jax.js"],

@@ -33,7 +33,7 @@ class BiVeSBaseForm(form.PostForm):
     diff_viewer = BiVeSDiffViewer
     diff_view = None
 
-    session = requests.Session()
+    session = None
 
     def update(self):
         self.request['disable_border'] = 1

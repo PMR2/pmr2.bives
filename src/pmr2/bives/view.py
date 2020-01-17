@@ -12,10 +12,11 @@ from .interfaces import ISettings
 
 registry_prefix = 'pmr2.bives.settings'
 
-_session = requests.Session()
 
+def call_bives(files, commands, session=None):
+    if session is None:
+        session = requests.Session()
 
-def call_bives(files, commands, session=_session):
     data = {
         'files': files,
         'commands': commands,

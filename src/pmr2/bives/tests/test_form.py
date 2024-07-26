@@ -62,8 +62,10 @@ class FormTestCase(unittest.TestCase):
             'commands': ['CellML', 'compHierarchyJson', 'reportHtml'],
         })
         result = form.render()
-        self.assertIn('data = {"error": "Server returned unexpected results"}',
-            result)
+        self.assertIn(
+            'data = {"error": "Server returned unexpected results."}',
+            result,
+        )
 
     def test_extract_fileentry_no_such_path(self):
         form = BiVeSFileentryPicker(self.portal, self.portal.REQUEST)

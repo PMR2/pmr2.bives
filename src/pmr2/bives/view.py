@@ -11,6 +11,7 @@ from pmr2.app.workspace.browser.browser import FilePage
 from .interfaces import ISettings
 
 registry_prefix = 'pmr2.bives.settings'
+requests_timeout = 2
 
 
 def call_bives(files, commands, session=None):
@@ -31,12 +32,20 @@ def call_bives(files, commands, session=None):
         return
 
     try:
-        r = session.post(settings.bives_endpoint, data=json.dumps(data))
+        r = session.post(
+            settings.bives_endpoint,
+            data=json.dumps(data),
+            timeout=requests_timeout,
+        )
         results = r.json()
         # It can be successfully decode so it should be safe(TM)
         results = r.text
     except ValueError:
-        results = '{"error": "Server returned unexpected results"}'
+        results = '{"error": "Server returned unexpected results."}'
+    except requests.exceptions.ReadTimeout:
+        results = '{"error": "Read timeout from BiVeS server."}'
+    except requests.exceptions.ConnectTimeout:
+        results = '{"error": "Connect timeout to BiVeS server."}'
     except requests.exceptions.ConnectionError:
         results = '{"error": "Error connecting to BiVeS server."}'
     except requests.exceptions.RequestException:
